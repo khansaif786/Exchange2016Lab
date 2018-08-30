@@ -56,7 +56,7 @@
   }
 },
   "variables": {
-    "_artifactsLocation": "https://raw.githubusercontent.com/khansaif786/ExchangeLab/master/exlab",
+    "_artifactsLocation": "https://raw.githubusercontent.com/khansaif786/Exchange2016Lab/master",
     "Shared-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/Shared-Resources.json')]",
     "EXLAB-DC-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/EXLAB-DC.json')]",
     "EXLAB-EXCH-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/EXLAB-EXCH.json')]",
