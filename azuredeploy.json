@@ -40,6 +40,13 @@
         "description": "Subnet Prefix"
       }
     },
+    "SubnetName": {
+      "type": "string",
+      "defaultValue": "IntSubnet",
+      "metadata": {
+        "description": "Provide Unique Subnet name"
+      }
+    },
     "DomainPrivateIP": {
       "type": "string",
       "defaultValue": "10.1.1.4",
@@ -55,7 +62,7 @@
       }
 
     }
-},
+  },
   "variables": {
     "_artifactsLocation": "https://raw.githubusercontent.com/khansaif786/Exchange2016Lab/master",
     "Shared-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/Shared-Resources.json')]",
@@ -63,7 +70,7 @@
     "EXLAB-EXCH-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/EXLAB-EXCH.json')]",
     "EXCH-VMExt-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/VMExt-EXCH.json')]",
     "StorageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]",
-    "Subnet1Name": "Subnet-1",
+    "Subnet1Name": "[parameters('SubnetName')]",
     "VMName": {
       "Name": [ "EXLAB-DC", "EXLAB-EXCH" ]
     }
