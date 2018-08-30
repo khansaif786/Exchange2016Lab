@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "StorageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_ZRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Premium_LRS"
+      ]
+    },
+    "VnetPrefix": {
+      "type": "securestring"
+    },
+    "VnetSubnet1Name": {
+      "type": "securestring"
+    },
+    "VnetSubnet1Prefix": {
+      "type": "securestring"
+    },
+    "StorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The Storage Account Name "
+      }
+    }
+  },
+    "resources": [
+      {
+        "name": "ExVnet",
+        "type": "Microsoft.Network/virtualNetworks",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-03-30",
+        "dependsOn": [],
+        "tags": {
+          "displayName": "ExVnet"
+        },
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[parameters('VnetPrefix')]"
+            ]
+          },
+          "subnets": [
+            {
+              "name": "[parameters('VnetSubnet1Name')]",
+              "properties": {
+                "addressPrefix": "[parameters('VnetSubnet1Name')]"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "[parameters('StorageAccountName')]",
+        "type": "Microsoft.Storage/storageAccounts",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-01-01",
+        "sku": {
+          "name": "[parameters('StorageAccountType')]"
+        },
+        "dependsOn": [],
+        "tags": {
+          "displayName": "StorageAccount"
+        },
+        "kind": "Storage"
+      }
+    ],
+    "outputs": {}
+  }

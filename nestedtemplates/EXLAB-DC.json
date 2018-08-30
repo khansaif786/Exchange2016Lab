@@ -1,0 +1,231 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "AdminUserName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "AdminPassword": {
+      "type": "securestring"
+    },
+    "DomainName": {
+      "type": "string",
+      "metadata": {
+        "description": "The FQDN of the AD Domain created "
+      }
+    },
+    "StorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The Storage Account Name "
+      }
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
+      }
+    },
+    "DCPrivateIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Private IP for your Domain Controller."
+      }
+    }
+  },
+  "variables": {
+    "StorageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]",
+    "VNetName": "ExVnet",
+    "VnetPrefix": "10.1.0.0/16",
+    "VnetSubnetName": "Subnet-1",
+    "VnetSubnetPrefix": "10.1.1.0/24",
+    "VMName": "EXLAB-AD",
+    "NicName": "[concat(variables('VMName'), '-NIC')]",
+    "InternalIP": "[parameters('DCPrivateIP')]",
+    "PublicIPName": "[concat(variables('VMName'), '-pip')]",
+    "PublicIPDnsName": "[concat(toLower(resourceGroup().name), '-dcpip')]",
+    //"PublicIPDnsName": "[concat(toLower(uniqueString(resourceGroup().id)), '-dcpip')]",
+    "ImagePublisher": "MicrosoftWindowsServer",
+    "ImageOffer": "WindowsServer",
+    "OSDiskName": "[concat(variables('VMName'), 'osdisk')]",
+    "VmSize": "Standard_D2_v2",
+    "VnetID": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'ExVnet')]",
+    "SubnetRef": "[concat(variables('VnetID'), '/subnets/', 'Subnet-1')]",
+    "VHDStorageAccountContainerName": "vhds",
+    "WindowsOSVersion": "2012-R2-Datacenter"
+
+  },
+
+  "resources": [
+    {
+      "name": "[variables('PublicIPName')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "DC-PublicIP"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('PublicIPDnsName')]"
+        }
+      }
+    },
+    {
+      "name": "[variables('NicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [
+        "[resourceId(resourceGroup().name,'Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]"
+      ],
+      "tags": {
+        "displayName": "DC-Nic"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "[concat('ipcfg-', variables('NicName'))]",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[variables('InternalIP')]",
+              "subnet": {
+                "id": "[variables('SubnetRef')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('PublicIPName'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('VMName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [ "[resourceId('Microsoft.Network/networkInterfaces', variables('NicName'))]" ],
+      "tags": {
+        "displayName": "EXCH-DC"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('VmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('VMName')]",
+          "adminUsername": "[parameters('AdminUsername')]",
+          "adminPassword": "[parameters('AdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('ImagePublisher')]",
+            "offer": "[variables('ImageOffer')]",
+            "sku": "[variables('WindowsOSVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[variables('OSDiskName')]",
+            "vhd": {
+              "uri": "[concat('http://', parameters('StorageAccountName'), '.blob.core.windows.net/vhd/', variables('OSDiskName'), '.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "vhd": {
+                "uri": "[concat('http://', parameters('StorageAccountName'), '.blob.core.windows.net/vhd/', variables('VMName'), '-data-disk.vhd')]"
+              },
+              "name": "[concat(variables('VMName'), '-data-disk')]",
+              "caching": "None",
+              "createOption": "Empty",
+              "diskSizeGB": "100",
+              "lun": 0
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('NicName'))]"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "name": "CreateADDSCS",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2016-03-30",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', variables('VMName'))]"
+          ],
+          "tags": {
+            "displayName": "CreateADDSCS"
+          },
+          "properties": {
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.18",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "ModulesUrl": "[concat(parameters('_artifactsLocation'), '/DSC/', 'CreateADDSCS.ps1.zip')]",
+              "ConfigurationFunction": "CreateADDSCS.ps1\\CreateADDSCS",
+              "Properties": {
+                "DomainName": "[parameters('DomainName')]",
+                "AdminCreds": {
+                  "UserName": "[parameters('adminUsername')]",
+                  "Password": "PrivateSettingsRef:AdminPassword"
+                }
+              }
+            },
+            "protectedSettings": {
+              "Items": {
+                "AdminPassword": "[parameters('adminPassword')]"
+              }
+              //"configurationUrlSasToken": "[parameters('_artifactsLocationSasToken')]"
+            }
+          }
+        },
+     {
+          "name": "[variables('VNetName')]",
+          "type": "Microsoft.Network/virtualNetworks",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2015-06-15",
+          "tags": {
+            "displayName": "Update-Vnet1-DNS"
+          },
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', variables('VMName'))]",
+            "[resourceId('Microsoft.Compute/virtualMachines/extensions', variables('VMName'), 'CreateADDSCS')]"
+          ],
+          "properties": {
+            "addressSpace": {
+              "addressPrefixes": [
+                "[variables('VnetPrefix')]"
+              ]
+            },
+            "dhcpOptions": {
+              "dnsServers": [ "[variables('internalIP')]" ]
+            },
+            "subnets": [
+              {
+                "name": "[variables('VnetSubnetName')]",
+                "properties": {
+                  "addressPrefix": "[variables('VnetSubnetPrefix')]"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+    "outputs": {}
+  }
