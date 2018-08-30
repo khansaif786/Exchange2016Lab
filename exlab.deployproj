@@ -23,14 +23,18 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
-    <Content Include="azuredeploy.json" />
+    <Content Include="azuredeploy.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Include="azuredeploy.parameters.json" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
     <Content Include="nestedtemplates\Shared-Resources.json" />
-    <Content Include="nestedtemplates\EXLAB-DC.json" />
+    <Content Include="nestedtemplates\EXLAB-DC.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Include="DSC\CreateADDSCS.ps1" />
     <Content Include="DSC\CreateADDSCS.ps1.zip">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -38,7 +42,9 @@
     <Content Include="nestedtemplates\EXLAB-EXCH.json" />
     <Content Include="nestedtemplates\VM-ext-Domainjoin.json" />
     <Content Include="DSC\Exchprereq.ps1.zip" />
-    <Content Include="nestedtemplates\VMExt-EXCH.json" />
+    <Content Include="nestedtemplates\VMExt-EXCH.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Include="README.md" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />

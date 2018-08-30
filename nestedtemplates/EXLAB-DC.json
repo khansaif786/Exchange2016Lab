@@ -62,8 +62,8 @@
     "ImageOffer": "WindowsServer",
     "OSDiskName": "[concat(variables('VMName'), 'osdisk')]",
     "VmSize": "Standard_D2_v2",
-    "VnetID": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', 'ExVnet')]",
-    "SubnetRef": "[concat(variables('VnetID'), '/subnets/', 'Subnet-1')]",
+    "VnetID": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('VnetName'))]",
+    "SubnetRef": "[concat(variables('VnetID'), '/subnets/', parameters('VnetSubnet1Name'))]",
     "VHDStorageAccountContainerName": "vhds",
     "WindowsOSVersion": "2012-R2-Datacenter"
 
@@ -103,7 +103,7 @@
             "name": "[concat('ipcfg-', variables('NicName'))]",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[variables('InternalIP')]",
+              "privateIPAddress": "[parameters('DCPrivateIP')]",
               "subnet": {
                 "id": "[variables('SubnetRef')]"
               },
@@ -201,7 +201,6 @@
               "Items": {
                 "AdminPassword": "[parameters('adminPassword')]"
               }
-              //"configurationUrlSasToken": "[parameters('_artifactsLocationSasToken')]"
             }
           }
         },
@@ -224,13 +223,13 @@
               ]
             },
             "dhcpOptions": {
-              "dnsServers": [ "[variables('internalIP')]" ]
+              "dnsServers": [ "[parameters('DCPrivateIP')]" ]
             },
             "subnets": [
               {
-                "name": "[variables('VnetSubnetName')]",
+                "name": "[parameters('VnetSubnet1Name')]",
                 "properties": {
-                  "addressPrefix": "[variables('VnetSubnetPrefix')]"
+                  "addressPrefix": "[parameters('VnetSubnet1Prefix')]"
                 }
               }
             ]
