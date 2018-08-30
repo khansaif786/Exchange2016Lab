@@ -27,6 +27,18 @@
         "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
       }
     },
+    "VnetName": {
+      "type": "securestring"
+    },
+    "VnetPrefix": {
+      "type": "securestring"
+    },
+    "VnetSubnet1Name": {
+      "type": "securestring"
+    },
+    "VnetSubnet1Prefix": {
+      "type": "securestring"
+    },
     "DCPrivateIP": {
       "type": "string",
       "metadata": {
@@ -36,10 +48,10 @@
   },
   "variables": {
     "StorageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]",
-    "VNetName": "ExVnet",
-    "VnetPrefix": "10.1.0.0/16",
-    "VnetSubnetName": "Subnet-1",
-    "VnetSubnetPrefix": "10.1.1.0/24",
+    "VNetName": "[parameters('VnetName')]",
+    "VnetPrefix": "[parameters('VnetPrefix')]",
+    "VnetSubnetName": "[parameters('VnetSubnet1Name')]",
+    "VnetSubnetPrefix": "[parameters('VnetSubnet1Prefix')]",
     "VMName": "EXLAB-AD",
     "NicName": "[concat(variables('VMName'), '-NIC')]",
     "InternalIP": "[parameters('DCPrivateIP')]",

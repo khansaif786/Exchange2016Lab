@@ -71,6 +71,7 @@
     "EXCH-VMExt-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/VMExt-EXCH.json')]",
     "StorageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]",
     "Subnet1Name": "[parameters('SubnetName')]",
+    "VnetName": "[concat(resourceGroup().name, '-Vnet')]",
     "VMName": {
       "Name": [ "EXLAB-DC", "EXLAB-EXCH" ]
     }
@@ -91,6 +92,9 @@
             "StorageAccountType": {
               "value": "[parameters('StorageAccountType')]"
             },
+            "VnetName": {
+              "value": "[variables('VnetName')]"
+            },
             "VnetPrefix": {
               "value": "[parameters('vnetAddressPrefix')]"
             },
@@ -98,7 +102,7 @@
               "value": "[variables('Subnet1Name')]"
             },
             "VnetSubnet1Prefix": {
-              "value": "[parameters('vnetAddressPrefix')]"
+              "value": "[parameters('subnetPrefix')]"
             },
             "StorageAccountName": {
               "value": "[variables('StorageAccountName')]"
@@ -135,8 +139,20 @@
               "StorageAccountName": {
                 "value": "[variables('StorageAccountName')]"
               },
+              "VnetName": {
+                "value": "[variables('VnetName')]"
+              },
+              "VnetPrefix": {
+                "value": "[parameters('vnetAddressPrefix')]"
+              },
+              "VnetSubnet1Name": {
+                "value": "[variables('Subnet1Name')]"
+              },
+              "VnetSubnet1Prefix": {
+                "value": "[parameters('subnetPrefix')]"
+              },
               "DCPrivateIP": {
-                "value":  "[parameters('DomainPrivateIP')]"
+                "value": "[parameters('DomainPrivateIP')]"
               }
 
             }
@@ -172,8 +188,20 @@
             "StorageAccountName": {
               "value": "[variables('StorageAccountName')]"
             },
+            "VnetName": {
+              "value": "[variables('VnetName')]"
+            },
+            "VnetPrefix": {
+              "value": "[parameters('vnetAddressPrefix')]"
+            },
+            "VnetSubnet1Name": {
+              "value": "[variables('Subnet1Name')]"
+            },
+            "VnetSubnet1Prefix": {
+              "value": "[parameters('subnetPrefix')]"
+            },
             "ExchPrivateIP": {
-              "value":  "[parameters('ExchangePrivateIP')]"
+              "value": "[parameters('ExchangePrivateIP')]"
             }
           }
         }
