@@ -46,7 +46,6 @@
       "metadata": {
         "description": "The IP address of the Domain Controller."
       }
-
     },
     "ExchangePrivateIP": {
       "type": "string",
@@ -63,7 +62,7 @@
     "EXLAB-DC-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/EXLAB-DC.json')]",
     "EXLAB-EXCH-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/EXLAB-EXCH.json')]",
     "EXCH-VMExt-ResourcesTemplateUri": "[concat(variables('_artifactsLocation'),'/nestedtemplates/VMExt-EXCH.json')]",
-    "StorageAccountName": "\"[concat('storage', uniqueString(resourceGroup().id",
+    "StorageAccountName": "[concat('storage', uniqueString(resourceGroup().id))]",
     "Subnet1Name": "Subnet-1",
     "VMName": {
       "Name": [ "EXLAB-DC", "EXLAB-EXCH" ]
