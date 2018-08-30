@@ -49,7 +49,7 @@
             {
               "name": "[parameters('VnetSubnet1Name')]",
               "properties": {
-                "addressPrefix": "[parameters('VnetSubnet1Name')]"
+                "addressPrefix": "[parameters('VnetSubnet1Prefix')]"
               }
             }
           ]
