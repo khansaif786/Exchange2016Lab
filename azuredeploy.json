@@ -42,18 +42,20 @@
     },
     "DomainPrivateIP": {
       "type": "string",
+      "defaultValue": "10.1.1.4",
       "metadata": {
         "description": "The IP address of the Domain Controller."
-      },
-      "defaultValue": "10.1.1.4"
+      }
+
     },
-  "ExchangePrivateIP": {
-    "type": "string",
-    "metadata": {
-      "description": "The IP address of your exchange server."
-    },
-    "defaultValue": "10.1.1.5"
-  }
+    "ExchangePrivateIP": {
+      "type": "string",
+      "defaultValue": "10.1.1.5",
+      "metadata": {
+        "description": "The IP address of your exchange server."
+      }
+
+    }
 },
   "variables": {
     "_artifactsLocation": "https://raw.githubusercontent.com/khansaif786/Exchange2016Lab/master",
