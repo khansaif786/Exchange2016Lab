@@ -158,85 +158,85 @@
             }
         }
       },
-    //  {
-    //    "name": "EXLAB-EXCH",
-    //    "type": "Microsoft.Resources/deployments",
-    //    "apiVersion": "2016-09-01",
-    //    "dependsOn": [
-    //      "[concat('Microsoft.Resources/deployments/', 'Shared-Resources')]",
-    //      "[concat('Microsoft.Resources/deployments/', 'EXLAB-DC')]"
-    //    ],
-    //    "properties": {
-    //      "mode": "Incremental",
-    //      "templateLink": {
-    //        "uri": "[variables('EXLAB-EXCH-ResourcesTemplateUri')]",
-    //        "contentVersion": "1.0.0.0"
-    //      },
-    //      "parameters": {
-    //        "AdminUserName": {
-    //          "value": "[parameters('AdminUserName')]"
-    //        },
-    //        "AdminPassword": {
-    //          "value": "[parameters('AdminPassword')]"
-    //        },
-    //        "DomainName": {
-    //          "value": "[parameters('DomainName')]"
-    //        },
-    //        "_artifactsLocation": {
-    //          "value": "[variables('_artifactsLocation')]"
-    //        },
-    //        "StorageAccountName": {
-    //          "value": "[variables('StorageAccountName')]"
-    //        },
-    //        "VnetName": {
-    //          "value": "[variables('VnetName')]"
-    //        },
-    //        "VnetPrefix": {
-    //          "value": "[parameters('vnetAddressPrefix')]"
-    //        },
-    //        "VnetSubnet1Name": {
-    //          "value": "[variables('Subnet1Name')]"
-    //        },
-    //        "VnetSubnet1Prefix": {
-    //          "value": "[parameters('subnetPrefix')]"
-    //        },
-    //        "ExchPrivateIP": {
-    //          "value": "[parameters('ExchangePrivateIP')]"
-    //        }
-    //      }
-    //    }
-    //  },
-    //  {
-    //    "name": "VMExt-EXCH",
-    //    "type": "Microsoft.Resources/deployments",
-    //    "apiVersion": "2016-09-01",
-    //    "dependsOn": [
-    //      "[concat('Microsoft.Resources/deployments/', 'Shared-Resources')]",
-    //      "[concat('Microsoft.Resources/deployments/', 'EXLAB-DC')]",
-    //      "[concat('Microsoft.Resources/deployments/', 'EXLAB-EXCH')]"
-    //    ],
-    //    "properties": {
-    //      "mode": "Incremental",
-    //      "templateLink": {
-    //        "uri": "[variables('EXCH-VMExt-ResourcesTemplateUri')]",
-    //        "contentVersion": "1.0.0.0"
-    //      },
-    //      "parameters": {
-    //        "AdminUserName": {
-    //          "value": "[parameters('AdminUserName')]"
-    //        },
-    //        "AdminPassword": {
-    //          "value": "[parameters('AdminPassword')]"
-    //        },
-    //        "DomainName": {
-    //          "value": "[parameters('DomainName')]"
-    //        },
-    //        "_artifactsLocation": {
-    //          "value": "[variables('_artifactsLocation')]"
-    //        }
-    //      }
-    //    }
-    //  }
-    //],
+      {
+        "name": "EXLAB-EXCH",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2016-09-01",
+        "dependsOn": [
+          "[concat('Microsoft.Resources/deployments/', 'Shared-Resources')]",
+          "[concat('Microsoft.Resources/deployments/', 'EXLAB-DC')]"
+        ],
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[variables('EXLAB-EXCH-ResourcesTemplateUri')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "AdminUserName": {
+              "value": "[parameters('AdminUserName')]"
+            },
+            "AdminPassword": {
+              "value": "[parameters('AdminPassword')]"
+            },
+            "DomainName": {
+              "value": "[parameters('DomainName')]"
+            },
+            "_artifactsLocation": {
+              "value": "[variables('_artifactsLocation')]"
+            },
+            "StorageAccountName": {
+              "value": "[variables('StorageAccountName')]"
+            },
+            "VnetName": {
+              "value": "[variables('VnetName')]"
+            },
+            "VnetPrefix": {
+              "value": "[parameters('vnetAddressPrefix')]"
+            },
+            "VnetSubnet1Name": {
+              "value": "[variables('Subnet1Name')]"
+            },
+            "VnetSubnet1Prefix": {
+              "value": "[parameters('subnetPrefix')]"
+            },
+            "ExchPrivateIP": {
+              "value": "[parameters('ExchangePrivateIP')]"
+            }
+          }
+        }
+      },
+      {
+        "name": "VMExt-EXCH",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2016-09-01",
+        "dependsOn": [
+          "[concat('Microsoft.Resources/deployments/', 'Shared-Resources')]",
+          "[concat('Microsoft.Resources/deployments/', 'EXLAB-DC')]",
+          "[concat('Microsoft.Resources/deployments/', 'EXLAB-EXCH')]"
+        ],
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[variables('EXCH-VMExt-ResourcesTemplateUri')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "AdminUserName": {
+              "value": "[parameters('AdminUserName')]"
+            },
+            "AdminPassword": {
+              "value": "[parameters('AdminPassword')]"
+            },
+            "DomainName": {
+              "value": "[parameters('DomainName')]"
+            },
+            "_artifactsLocation": {
+              "value": "[variables('_artifactsLocation')]"
+            }
+          }
+        }
+      }
+    ],
     "outputs": {}
   }
