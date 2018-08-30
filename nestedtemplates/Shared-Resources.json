@@ -13,6 +13,9 @@
         "Premium_LRS"
       ]
     },
+    "VnetName": {
+      "type": "securestring"
+    },
     "VnetPrefix": {
       "type": "securestring"
     },
@@ -31,13 +34,13 @@
   },
     "resources": [
       {
-        "name": "ExVnet",
+        "name": "[parameters('VnetName')]",
         "type": "Microsoft.Network/virtualNetworks",
         "location": "[resourceGroup().location]",
         "apiVersion": "2016-03-30",
         "dependsOn": [],
         "tags": {
-          "displayName": "ExVnet"
+          "displayName": "[parameters('VnetName')]"
         },
         "properties": {
           "addressSpace": {
