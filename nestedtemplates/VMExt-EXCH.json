@@ -2,17 +2,20 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-     "_artifactsLocation": {
-       "type": "string",
-       "metadata": {
-         "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
-       }
-     },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
+      }
+    },
     "AdminUserName": {
       "type": "string",
       "minLength": 1
     },
     "AdminPassword": {
+      "type": "securestring"
+    },
+    "VMName": {
       "type": "securestring"
     },
     "DomainName": {
@@ -28,7 +31,7 @@
     "DSCExchprereqFileName": "Exchprereq.ps1.zip",
     "PrerequisitsArchiveFolder": "DSC",
     "PrerequisitsArchiveFileName": "Exchprereq.ps1.zip",
-    "VMName": "EXLAB-EXCH"
+    "VMName": "[parameters('VMName')]"
   },
   "resources": [
     {

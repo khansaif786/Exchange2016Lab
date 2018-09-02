@@ -26,6 +26,18 @@
         "description": "The FQDN of the AD Domain created "
       }
     },
+    "DCVMName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of domain controller virtual Machine"
+      }
+    },
+    "ExchVMName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of domain controller virtual Machine."
+      }
+    },
     "vnetAddressPrefix": {
       "type": "string",
       "defaultValue": "10.2.0.0/16",
@@ -92,7 +104,7 @@
             "StorageAccountType": {
               "value": "[parameters('StorageAccountType')]"
             },
-            "VnetName": {
+           "VnetName": {
               "value": "[variables('VnetName')]"
             },
             "VnetPrefix": {
@@ -130,6 +142,9 @@
               "AdminPassword": {
                 "value": "[parameters('AdminPassword')]"
               },
+              "VMName": {
+                "value": "[parameters('DCVMName')]"
+              },
               "DomainName": {
                 "value": "[parameters('DomainName')]"
               },
@@ -154,7 +169,6 @@
               "DCPrivateIP": {
                 "value": "[parameters('DomainPrivateIP')]"
               }
-
             }
         }
       },
@@ -178,6 +192,9 @@
             },
             "AdminPassword": {
               "value": "[parameters('AdminPassword')]"
+            },
+            "VMName": {
+              "value": "[parameters('ExchVMName')]"
             },
             "DomainName": {
               "value": "[parameters('DomainName')]"
@@ -227,6 +244,9 @@
             },
             "AdminPassword": {
               "value": "[parameters('AdminPassword')]"
+            },
+            "VMName": {
+              "value": "[parameters('ExchVMName')]"
             },
             "DomainName": {
               "value": "[parameters('DomainName')]"

@@ -9,6 +9,9 @@
     "AdminPassword": {
       "type": "securestring"
     },
+    "VMName": {
+      "type": "securestring"
+    },
     "DomainName": {
       "type": "string",
       "metadata": {
@@ -52,7 +55,7 @@
     "VnetPrefix": "[parameters('VnetPrefix')]",
     "VnetSubnetName": "[parameters('VnetSubnet1Name')]",
     "VnetSubnetPrefix": "[parameters('VnetSubnet1Prefix')]",
-    "VMName": "EXLAB-AD",
+    "VMName": "[parameters('VMName')]",
     "NicName": "[concat(variables('VMName'), '-NIC')]",
     "InternalIP": "[parameters('DCPrivateIP')]",
     "PublicIPName": "[concat(variables('VMName'), '-pip')]",
